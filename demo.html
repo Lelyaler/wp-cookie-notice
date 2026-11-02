@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WP Cookie Notice — Интерактивное демо</title>
+  <link rel="stylesheet" href="assets/css/cookie-notice.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f1115;
+      color: #e5e7eb;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .demo-card {
+      background: #181b20;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 680px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    p.subtitle {
+      color: #9ca3af;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(241, 79, 79, 0.15);
+      color: #f14f4f;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .control-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .control-item label {
+      font-size: 12px;
+      color: #9ca3af;
+      font-weight: 500;
+    }
+    .control-item select,
+    .control-item input[type="text"],
+    .control-item input[type="color"] {
+      background: #232730;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+    }
+    .control-item input[type="color"] {
+      height: 38px;
+      padding: 2px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+    .btn-primary {
+      background: #f14f4f;
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #e03f3f;
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.15);
+    }
+    .status-box {
+      margin-top: 20px;
+      padding: 12px 16px;
+      border-radius: 6px;
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      font-size: 13px;
+      color: #00F0FF;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+      <h1>🍪 WP Cookie Notice</h1>
+      <span class="badge">Vanilla JS ~1.2 KB</span>
+    </div>
+    <p class="subtitle">
+      Тестовый стенд для проверки плагина уведомлений о cookie. Ниже расположены элементы управления, эмулирующие настройки нативного WordPress Settings API.
+    </p>
+
+    <div class="status-box" id="status-box">
+      Статус согласия: <strong id="consent-status">Не получено (баннер отображается)</strong>
+    </div>
+
+    <div class="controls-grid">
+      <div class="control-item">
+        <label for="banner-position">Позиция баннера</label>
+        <select id="banner-position">
+          <option value="bottom" selected>Снизу (Bottom)</option>
+          <option value="top">Сверху (Top)</option>
+        </select>
+      </div>
+      <div class="control-item">
+        <label for="banner-bg">Цвет фона баннера</label>
+        <input type="color" id="banner-bg" value="#181b20">
+      </div>
+      <div class="control-item">
+        <label for="banner-text">Цвет текста баннера</label>
+        <input type="color" id="banner-text" value="#f3f4f6">
+      </div>
+      <div class="control-item">
+        <label for="btn-bg">Цвет кнопки согласия</label>
+        <input type="color" id="btn-bg" value="#f14f4f">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-secondary" id="reset-cookie-btn">Сбросить согласие (показать баннер)</button>
+      <a class="btn btn-primary" href="http://localhost:8080/wp-admin/options-general.php?page=wp-cookie-notice" target="_blank" style="text-decoration:none;">Открыть админку WordPress ↗</a>
+    </div>
+  </div>
+
+  <!-- Cookie Notice Banner (HTML identical to render_cookie_notice() output) -->
+  <div id="wp-cookie-notice-banner" class="wp-cookie-notice-banner position-bottom" role="region" aria-label="Уведомление об использовании cookie" style="display: none;">
+    <div class="wp-cookie-notice-container">
+      <div class="wp-cookie-notice-text">
+        Мы используем файлы cookie для улучшения работы сайта и аналитики. Продолжая просмотр сайта, вы соглашаетесь с нашей
+        <a href="#" class="wp-cookie-notice-privacy-link" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>.
+      </div>
+      <div class="wp-cookie-notice-actions">
+        <button type="button" id="wp-cookie-notice-accept-btn" class="wp-cookie-notice-btn">Принять</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Dynamic Style Element -->
+  <style id="wp-cookie-notice-inline-css">
+    #wp-cookie-notice-banner { background-color: #181b20; color: #f3f4f6; }
+    #wp-cookie-notice-banner .wp-cookie-notice-btn { background-color: #f14f4f; color: #ffffff; }
+  </style>
+
+  <!-- Script Config -->
+  <script>
+    window.wpCookieNoticeConfig = {
+      cookieName: "wp_cookie_consent_accepted",
+      expiryDays: 30
+    };
+  </script>
+
+  <!-- Production Plugin Script -->
+  <script src="assets/js/cookie-notice.js"></script>
+
+  <!-- Demo Interactive Controller -->
+  <script>
+    (function() {
+      const banner = document.getElementById("wp-cookie-notice-banner");
+      const statusText = document.getElementById("consent-status");
+      const resetBtn = document.getElementById("reset-cookie-btn");
+      const posSelect = document.getElementById("banner-position");
+      const bgInput = document.getElementById("banner-bg");
+      const textInput = document.getElementById("banner-text");
+      const btnBgInput = document.getElementById("btn-bg");
+      const inlineStyle = document.getElementById("wp-cookie-notice-inline-css");
+
+      function updateStatus() {
+        const accepted = localStorage.getItem("wp_cookie_consent_accepted") === "1" ||
+                         document.cookie.indexOf("wp_cookie_consent_accepted=1") !== -1;
+        if (accepted) {
+          statusText.textContent = "Согласие принято (баннер скрыт)";
+          statusText.style.color = "#10b981";
+        } else {
+          statusText.textContent = "Не получено (баннер отображается)";
+          statusText.style.color = "#00F0FF";
+        }
+      }
+
+      function updateColors() {
+        inlineStyle.textContent = `
+          #wp-cookie-notice-banner { background-color: ${bgInput.value}; color: ${textInput.value}; }
+          #wp-cookie-notice-banner .wp-cookie-notice-btn { background-color: ${btnBgInput.value}; color: #ffffff; }
+        `;
+      }
+
+      posSelect.addEventListener("change", function() {
+        banner.classList.remove("position-top", "position-bottom");
+        banner.classList.add("position-" + this.value);
+      });
+
+      bgInput.addEventListener("input", updateColors);
+      textInput.addEventListener("input", updateColors);
+      btnBgInput.addEventListener("input", updateColors);
+
+      resetBtn.addEventListener("click", function() {
+        localStorage.removeItem("wp_cookie_consent_accepted");
+        document.cookie = "wp_cookie_consent_accepted=; Max-Age=0; path=/;";
+        banner.style.display = "block";
+        requestAnimationFrame(() => banner.classList.add("is-visible"));
+        updateStatus();
+      });
+
+      document.getElementById("wp-cookie-notice-accept-btn").addEventListener("click", function() {
+        setTimeout(updateStatus, 350);
+      });
+
+      setInterval(updateStatus, 500);
+    })();
+  </script>
+</body>
+</html>

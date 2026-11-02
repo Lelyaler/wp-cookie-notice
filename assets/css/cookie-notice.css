@@ -1,0 +1,109 @@
+.wp-cookie-notice-banner {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  z-index: 999999;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  box-sizing: border-box;
+}
+
+.wp-cookie-notice-banner.position-bottom {
+  bottom: 0;
+  transform: translateY(100%);
+}
+
+.wp-cookie-notice-banner.position-top {
+  top: 0;
+  transform: translateY(-100%);
+}
+
+.wp-cookie-notice-banner.is-visible {
+  transform: translateY(0);
+}
+
+.wp-cookie-notice-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.wp-cookie-notice-text {
+  font-size: 14px;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.wp-cookie-notice-privacy-link {
+  color: inherit;
+  text-decoration: underline;
+  margin-left: 6px;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.wp-cookie-notice-privacy-link:hover,
+.wp-cookie-notice-privacy-link:focus {
+  opacity: 1;
+}
+
+.wp-cookie-notice-actions {
+  flex-shrink: 0;
+}
+
+.wp-cookie-notice-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 24px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.wp-cookie-notice-btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.wp-cookie-notice-btn:active {
+  transform: translateY(0);
+}
+
+.wp-cookie-notice-btn:focus-visible {
+  outline: 2px solid #00F0FF;
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .wp-cookie-notice-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 14px 18px;
+    gap: 12px;
+  }
+
+  .wp-cookie-notice-text {
+    font-size: 13px;
+  }
+
+  .wp-cookie-notice-actions {
+    width: 100%;
+  }
+
+  .wp-cookie-notice-btn {
+    width: 100%;
+    padding: 10px 16px;
+  }
+}
